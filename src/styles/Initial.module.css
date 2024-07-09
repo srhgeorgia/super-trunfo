@@ -3,7 +3,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin-top: 7%;
+  margin: 4%;
 }
 
 .title {
@@ -64,9 +64,9 @@
   height: 10rem;
 }
 
-@media (min-width: 340px) and (max-width: 1250px) {
+@media (min-width: 340px) and (max-width: 1290px) {
   .container {
-    margin: 20% 10% 0 10%;
+    margin: 5% 10% 0 10%;
   }
 
   .box {

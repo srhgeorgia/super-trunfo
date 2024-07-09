@@ -40,3 +40,9 @@ button {
 button:hover {
   background-color: #ef9325;
 }
+
+@media (min-width: 340px) and (max-width: 1290px) {
+  button {
+    font-size: 12px;
+  }
+}

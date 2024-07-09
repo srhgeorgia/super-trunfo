@@ -368,6 +368,7 @@ const Cards: React.FC = () => {
                     alt={card.name}
                     width="170"
                     height="100"
+                    className={styles.cardImage}
                   />
                   <p className={styles.descripCard}>Power: {card.power}</p>
                   <p className={styles.descripCard}>Speed: {card.speed}</p>
@@ -395,6 +396,7 @@ const Cards: React.FC = () => {
                     alt={card.name}
                     width="170"
                     height="100"
+                    className={styles.cardImage}
                   />
                   <p className={styles.descripCard}>Power: {card.power}</p>
                   <p className={styles.descripCard}>Speed: {card.speed}</p>
