@@ -1,7 +1,16 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig } from 'vite';
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  root: '.', // Define o diretório raiz como o diretório principal
+  base: './', // Define a base URL relativa
+  publicDir: 'public', // Diretório para arquivos estáticos
+  build: {
+    outDir: 'dist', // Diretório de saída para a build
+    rollupOptions: {
+      input: 'index.html', // Arquivo de entrada principal
+    },
+  },
+  server: {
+    open: true, // Abre o navegador automaticamente quando o servidor iniciar
+  },
+});
