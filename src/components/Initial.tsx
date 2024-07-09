@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styles from '../styles/Initial.module.css';
+import carta from '../assets/carta.png';
 
 interface InitialProps {
   onStartGame: () => void;
@@ -22,11 +23,7 @@ export const Initial: React.FC<InitialProps> = ({ onStartGame }) => {
         <div className={styles.box}>
           <div className={styles.boxTitle}>
             <h1 className={styles.title}>Super Trunfo</h1>
-            <img
-              src="./src/assets/carta.png"
-              alt="cartas"
-              className={styles.imagem}
-            />
+            <img src={carta} alt="cartas" className={styles.imagem} />
           </div>
           <p className={styles.description}>
             Bem-vindo ao Super Trunfo! <br></br>Clique no botão abaixo para
