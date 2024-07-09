@@ -23,7 +23,7 @@ export const Initial: React.FC<InitialProps> = ({ onStartGame }) => {
           <div className={styles.boxTitle}>
             <h1 className={styles.title}>Super Trunfo</h1>
             <img
-              src="../assets/cards.png"
+              src="./src/assets/carta.png"
               alt="cartas"
               className={styles.imagem}
             />
