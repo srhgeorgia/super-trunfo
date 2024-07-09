@@ -9,6 +9,7 @@
 .title {
   font-size: 4rem;
   margin-right: 1rem;
+  font-weight: 700;
 }
 
 .box {
@@ -16,9 +17,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f4f1ec;
   padding: 4rem;
   border-radius: 12px;
+  border: 5px solid #543434;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -50,9 +52,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #ffffff;
+  background-color: #f4f1ec;
   padding: 4rem;
   border-radius: 12px;
+  border: 5px solid #543434;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 

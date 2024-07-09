@@ -10,7 +10,7 @@ const initialCards: Card[] = [
       'https://s2-autoesporte.glbimg.com/KG5n_oCrx_sdn9CTg9IAYYIgpW0=/0x0:1980x1110/924x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_cf9d035bf26b4646b105bd958f32089d/internal_photos/bs/2023/i/Q/gcSrxUTl2FcnXth61vGw/byd-seal-4-.jpg',
   },
   {
-    name: 'Ferrari Purosangue',
+    name: 'Ferrari ',
     power: 725,
     speed: 110,
     torque: 73,
@@ -74,7 +74,7 @@ const initialCards: Card[] = [
       'https://s2-autoesporte.glbimg.com/-K5IGTKHh5gX_IZ7McwXqnisalc=/0x0:620x290/984x0/smart/filters:strip_icc()/i.s3.glbimg.com/v1/AUTH_cf9d035bf26b4646b105bd958f32089d/internal_photos/bs/2020/Y/X/BHfJdnRzi6KyYtvxJLjg/2017-08-01-corolla2.jpg',
   },
   {
-    name: 'Ford Mustang Mach 1',
+    name: 'Ford Mustang',
     power: 483,
     speed: 250,
     torque: 56.7,

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&family=Press+Start+2P&display=swap');
+
 * {
   margin: 0;
   padding: 0;
@@ -13,12 +15,12 @@
 
 body {
   line-height: 1.5;
-  background-color: #f0f0f0;
-  font-family: proxima-nova, Helvetica, Arial, sans-serif;
+  background-color: #e6cba0;
+  font-family: 'Nunito Sans', sans-serif;
 }
 
 button {
-  background-color: #f94668;
+  background-color: #ffb31a;
   border: none;
   color: white;
   padding: 15px 32px;
@@ -31,8 +33,10 @@ button {
   border-radius: 12px;
   font-weight: bold;
   transition: 0.3s;
+  color: #543434;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 button:hover {
-  background-color: #543434;
+  background-color: #ef9325;
 }

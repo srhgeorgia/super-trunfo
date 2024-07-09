@@ -38,7 +38,7 @@ const Cards: React.FC = () => {
   const [selectedAttribute, setSelectedAttribute] = useState<
     'power' | 'speed' | 'torque' | null
   >(null);
-  const [currentPlayer, setCurrentPlayer] = useState<'A' | 'B'>('A');
+  const [currentPlayer, setCurrentPlayer] = useState<'A' | 'B' | null>(null);
   const [winner, setWinner] = useState<string | null>(null);
   const [gameOver, setGameOver] = useState(false);
   const [winnerText, setWinnerText] = useState<string>('');
@@ -46,7 +46,9 @@ const Cards: React.FC = () => {
     { playerA: Card[]; playerB: Card[]; winner: string; attribute: string }[]
   >([]);
   const [showHistory, setShowHistory] = useState(false);
-  const [showSelectionAlert, setShowSelectionAlert] = useState(false);
+  const [attributeChosenMessage, setAttributeChosenMessage] = useState<
+    string | null
+  >(null);
 
   const saveGameToLocalStorage = (
     playerA: Card[],
@@ -77,11 +79,13 @@ const Cards: React.FC = () => {
     setSelectedCardA(null);
     setSelectedCardB(null);
     setSelectedAttribute(null);
-    setCurrentPlayer('A');
+
+    const initialPlayer = Math.random() < 0.5 ? 'A' : 'B';
+    setCurrentPlayer(initialPlayer);
     setWinner(null);
     setGameOver(false);
     setWinnerText('');
-    setShowSelectionAlert(false);
+    setAttributeChosenMessage(null);
   };
 
   useEffect(() => {
@@ -109,7 +113,6 @@ const Cards: React.FC = () => {
 
   const playRound = () => {
     if (!selectedCardA || !selectedCardB || !selectedAttribute) {
-      setShowSelectionAlert(true);
       return;
     }
 
@@ -132,7 +135,6 @@ const Cards: React.FC = () => {
     setWinner(roundWinner);
     setPlayerA(updatedPlayerA);
     setPlayerB(updatedPlayerB);
-    setCurrentPlayer((prev) => (prev === 'A' ? 'B' : 'A'));
 
     const attributeText =
       selectedAttribute === 'power'
@@ -156,32 +158,47 @@ const Cards: React.FC = () => {
       }
     } else {
       setWinnerText(`${roundWinner}`);
+      setCurrentPlayer(currentPlayer === 'A' ? 'B' : 'A');
     }
 
-    // Limpar seleção de cartas após cada rodada
     setSelectedCardA(null);
     setSelectedCardB(null);
     setSelectedAttribute(null);
+    setAttributeChosenMessage(null);
   };
 
   const selectCard = (player: 'A' | 'B', card: Card) => {
+    if (player !== currentPlayer || !currentPlayer) return;
+
     if (player === 'A') {
-      if (selectedCardA === card) {
-        setSelectedCardA(null);
-      } else {
-        setSelectedCardA(card);
-      }
+      setSelectedCardA(selectedCardA === card ? null : card);
     } else {
-      if (selectedCardB === card) {
-        setSelectedCardB(null);
-      } else {
-        setSelectedCardB(card);
-      }
+      setSelectedCardB(selectedCardB === card ? null : card);
     }
   };
 
   const selectAttribute = (attribute: 'power' | 'speed' | 'torque') => {
+    if (!currentPlayer || !selectedCardA) return;
+
     setSelectedAttribute(attribute);
+
+    const attributeText =
+      attribute === 'power'
+        ? 'Power'
+        : attribute === 'speed'
+        ? 'Speed'
+        : 'Torque';
+
+    setAttributeChosenMessage(
+      `Jogador ${currentPlayer} escolheu o atributo ${attributeText}`,
+    );
+    if (currentPlayer === 'A') {
+      setCurrentPlayer('B');
+    } else if (currentPlayer === 'B') {
+      setCurrentPlayer(null);
+    } else {
+      playRound();
+    }
   };
 
   const startNewRound = () => {
@@ -196,13 +213,14 @@ const Cards: React.FC = () => {
   const renderGameHistory = () => {
     return (
       <div className={styles.gameHistory}>
-        <h2>Histórico de Jogos</h2>
+        <h2 className={styles.nameHistory}>Histórico de Jogos</h2>
         <div className={styles.titleHistory}>
           <button onClick={() => setShowHistory(false)}>
             Fechar Histórico
           </button>
           <button onClick={clearHistory}>Limpar Histórico</button>
         </div>
+
         <div className={styles.boxHistory}>
           {gameHistory.map((game, index) => (
             <div key={index} className={styles.gameEntry}>
@@ -225,7 +243,7 @@ const Cards: React.FC = () => {
                   </p>
                 ))}
               </div>
-              <p>Vencedor: {game.winner}</p>
+              <p className={styles.winnerHistory}>Vencedor: {game.winner}</p>
             </div>
           ))}
         </div>
@@ -239,7 +257,9 @@ const Cards: React.FC = () => {
         <button onClick={() => window.location.reload()}>Voltar</button>
         <button
           onClick={() => {
-            playRound();
+            if (selectedAttribute) {
+              selectAttribute(selectedAttribute);
+            }
           }}
           disabled={!selectedCardA || !selectedCardB || !selectedAttribute}
         >
@@ -248,61 +268,50 @@ const Cards: React.FC = () => {
         <button onClick={() => setShowHistory(true)}>Ver Histórico</button>
       </div>
 
-      {showSelectionAlert && (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>Selecione uma Carta!</h2>
-            <button onClick={() => setShowSelectionAlert(false)}>OK</button>
-          </div>
+      {attributeChosenMessage && (
+        <div
+          className={`${styles.attributeNotification} ${styles.customStyle}`}
+        >
+          <p>{attributeChosenMessage}</p>
         </div>
       )}
 
-      {showHistory && gameHistory.length > 0 ? (
-        renderGameHistory()
-      ) : showHistory && gameHistory.length === 0 ? (
-        <div className={styles.modal}>
-          <div className={styles.modalContent}>
-            <h2>Nenhum Histórico Disponível</h2>
-            <button onClick={() => setShowHistory(false)}>OK</button>
-          </div>
-        </div>
-      ) : null}
+      {showHistory && renderGameHistory()}
 
       <div className={styles.containerAtributes}>
-        {selectedCardA && selectedCardB ? (
-          <div className={styles.controls}>
-            <button
-              onClick={() => selectAttribute('power')}
-              className={`${styles.buttonAttribute} ${
-                selectedAttribute === 'power' ? styles.selected : ''
-              }`}
-            >
-              Power
-            </button>
-            <button
-              onClick={() => selectAttribute('speed')}
-              className={`${styles.buttonAttribute} ${
-                selectedAttribute === 'speed' ? styles.selected : ''
-              }`}
-            >
-              Speed
-            </button>
-            <button
-              onClick={() => selectAttribute('torque')}
-              className={`${styles.buttonAttribute} ${
-                selectedAttribute === 'torque' ? styles.selected : ''
-              }`}
-            >
-              Torque
-            </button>
-          </div>
-        ) : (
-          winner &&
-          !gameOver && (
-            <div className={styles.result}>
-              <p>{winnerText}</p>
+        {(selectedCardA && currentPlayer === 'A') ||
+          (selectedCardB && currentPlayer == 'B' && (
+            <div className={styles.controls}>
+              <button
+                onClick={() => selectAttribute('power')}
+                className={`${styles.buttonAttribute} ${
+                  selectedAttribute === 'power' ? styles.selected : ''
+                }`}
+              >
+                Power
+              </button>
+              <button
+                onClick={() => selectAttribute('speed')}
+                className={`${styles.buttonAttribute} ${
+                  selectedAttribute === 'speed' ? styles.selected : ''
+                }`}
+              >
+                Speed
+              </button>
+              <button
+                onClick={() => selectAttribute('torque')}
+                className={`${styles.buttonAttribute} ${
+                  selectedAttribute === 'torque' ? styles.selected : ''
+                }`}
+              >
+                Torque
+              </button>
             </div>
-          )
+          ))}
+        {winner && !gameOver && (
+          <div className={styles.result}>
+            <p>{winnerText}</p>
+          </div>
         )}
       </div>
 
@@ -317,7 +326,7 @@ const Cards: React.FC = () => {
             <div className={styles.modalContent}>
               <h2>Fim de partida!</h2>
               <p>
-                {winner === 'Jogador A'
+                {winner === 'Jogador A ganhou a partida!'
                   ? `${playerA.name} Ganhou!`
                   : `${playerB.name} Ganhou!`}
               </p>
@@ -340,15 +349,17 @@ const Cards: React.FC = () => {
                 onClick={() => selectCard('A', card)}
               >
                 <p className={styles.cardName}>{card.name}</p>
-                <img
-                  src={card.imageUrl}
-                  alt={card.name}
-                  width="150"
-                  height="100"
-                />
-                <p className={styles.descripCard}>Power: {card.power}</p>
-                <p className={styles.descripCard}>Speed: {card.speed}</p>
-                <p className={styles.descripCard}>Torque: {card.torque}</p>
+                <div className={styles.cardBox}>
+                  <img
+                    src={card.imageUrl}
+                    alt={card.name}
+                    width="170"
+                    height="100"
+                  />
+                  <p className={styles.descripCard}>Power: {card.power}</p>
+                  <p className={styles.descripCard}>Speed: {card.speed}</p>
+                  <p className={styles.descripCard}>Torque: {card.torque}</p>
+                </div>
               </div>
             ))}
           </div>
@@ -365,15 +376,17 @@ const Cards: React.FC = () => {
                 onClick={() => selectCard('B', card)}
               >
                 <p className={styles.cardName}>{card.name}</p>
-                <img
-                  src={card.imageUrl}
-                  alt={card.name}
-                  width="150"
-                  height="100"
-                />
-                <p className={styles.descripCard}>Power: {card.power}</p>
-                <p className={styles.descripCard}>Speed: {card.speed}</p>
-                <p className={styles.descripCard}>Torque: {card.torque}</p>
+                <div className={styles.cardBox}>
+                  <img
+                    src={card.imageUrl}
+                    alt={card.name}
+                    width="170"
+                    height="100"
+                  />
+                  <p className={styles.descripCard}>Power: {card.power}</p>
+                  <p className={styles.descripCard}>Speed: {card.speed}</p>
+                  <p className={styles.descripCard}>Torque: {card.torque}</p>
+                </div>
               </div>
             ))}
           </div>
