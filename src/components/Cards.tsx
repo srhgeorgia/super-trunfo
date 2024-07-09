@@ -90,7 +90,6 @@ const Cards: React.FC = () => {
 
   useEffect(() => {
     loadGameFromLocalStorage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -136,19 +135,18 @@ const Cards: React.FC = () => {
     setPlayerA(updatedPlayerA);
     setPlayerB(updatedPlayerB);
 
-    const attributeText =
-      selectedAttribute === 'power'
-        ? 'Power'
-        : selectedAttribute === 'speed'
-        ? 'Speed'
-        : 'Torque';
-
     if (
       updatedPlayerA.cards.length === 0 ||
       updatedPlayerB.cards.length === 0
     ) {
       setGameOver(true);
       if (roundWinner !== null) {
+        const attributeText =
+          selectedAttribute === 'power'
+            ? 'Power'
+            : selectedAttribute === 'speed'
+            ? 'Speed'
+            : 'Torque';
         saveGameToLocalStorage(
           playerA.cards,
           playerB.cards,
@@ -158,7 +156,7 @@ const Cards: React.FC = () => {
       }
     } else {
       setWinnerText(`${roundWinner}`);
-      setCurrentPlayer(currentPlayer === 'A' ? 'B' : 'A');
+      setCurrentPlayer(currentPlayer);
     }
 
     setSelectedCardA(null);
@@ -178,7 +176,12 @@ const Cards: React.FC = () => {
   };
 
   const selectAttribute = (attribute: 'power' | 'speed' | 'torque') => {
-    if (!currentPlayer || !selectedCardA) return;
+    if (
+      !currentPlayer ||
+      (currentPlayer === 'A' && !selectedCardA) ||
+      (currentPlayer === 'B' && !selectedCardB)
+    )
+      return;
 
     setSelectedAttribute(attribute);
 
@@ -192,13 +195,13 @@ const Cards: React.FC = () => {
     setAttributeChosenMessage(
       `Jogador ${currentPlayer} escolheu o atributo ${attributeText}`,
     );
+
     if (currentPlayer === 'A') {
       setCurrentPlayer('B');
     } else if (currentPlayer === 'B') {
-      setCurrentPlayer(null);
-    } else {
-      playRound();
+      setCurrentPlayer('A');
     }
+    playRound();
   };
 
   const startNewRound = () => {
@@ -280,39 +283,49 @@ const Cards: React.FC = () => {
 
       <div className={styles.containerAtributes}>
         {(selectedCardA && currentPlayer === 'A') ||
-          (selectedCardB && currentPlayer == 'B' && (
-            <div className={styles.controls}>
-              <button
-                onClick={() => selectAttribute('power')}
-                className={`${styles.buttonAttribute} ${
-                  selectedAttribute === 'power' ? styles.selected : ''
-                }`}
-              >
-                Power
-              </button>
-              <button
-                onClick={() => selectAttribute('speed')}
-                className={`${styles.buttonAttribute} ${
-                  selectedAttribute === 'speed' ? styles.selected : ''
-                }`}
-              >
-                Speed
-              </button>
-              <button
-                onClick={() => selectAttribute('torque')}
-                className={`${styles.buttonAttribute} ${
-                  selectedAttribute === 'torque' ? styles.selected : ''
-                }`}
-              >
-                Torque
-              </button>
-            </div>
-          ))}
-        {winner && !gameOver && (
-          <div className={styles.result}>
-            <p>{winnerText}</p>
+        (selectedCardB && currentPlayer === 'B') ? (
+          <div className={styles.controls}>
+            <button
+              onClick={() => selectAttribute('power')}
+              className={`${styles.buttonAttribute} ${
+                selectedAttribute === 'power' ? styles.selected : ''
+              }`}
+              disabled={selectedAttribute !== null}
+            >
+              Power
+            </button>
+            <button
+              onClick={() => selectAttribute('speed')}
+              className={`${styles.buttonAttribute} ${
+                selectedAttribute === 'speed' ? styles.selected : ''
+              }`}
+              disabled={selectedAttribute !== null}
+            >
+              Speed
+            </button>
+            <button
+              onClick={() => selectAttribute('torque')}
+              className={`${styles.buttonAttribute} ${
+                selectedAttribute === 'torque' ? styles.selected : ''
+              }`}
+              disabled={selectedAttribute !== null}
+            >
+              Torque
+            </button>
           </div>
-        )}
+        ) : null}
+
+        {winner &&
+          !gameOver &&
+          !selectedAttribute &&
+          !(
+            (selectedCardA && currentPlayer === 'A') ||
+            (selectedCardB && currentPlayer === 'B')
+          ) && (
+            <div className={styles.result}>
+              <p>{winnerText}</p>
+            </div>
+          )}
       </div>
 
       <div className={styles.containerPlayers}>

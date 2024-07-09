@@ -39,15 +39,22 @@ export const Initial: React.FC<InitialProps> = ({ onStartGame }) => {
         <div className={styles.rules}>
           <h2 className={styles.title}>Regras do Super Trunfo</h2>
           <div className={styles.descriptionRules}>
-            <p>1. Cada jogador recebe um número igual de cartas.</p>
+            <p>1. Cada jogador recebe um número igual de cartas aleatórias.</p>
             <p>
               2. Em cada rodada, um jogador escolhe um atributo para comparar.
             </p>
             <p>
-              3. O jogador com o valor mais alto nesse atributo ganha a rodada e
+              3. Escolha a carta e em seguida o atributo que deseja desafiar.
+            </p>
+            <p>
+              4. Espere o jogador adversário escolher sua carta e depois clique
+              em "Jogar".
+            </p>
+            <p>
+              5. O jogador com o valor mais alto nesse atributo ganha a rodada e
               fica com as cartas comparadas.
             </p>
-            <p>4. O jogo continua até que um jogador tenha todas as cartas.</p>
+            <p>6. O jogo continua até que um jogador tenha todas as cartas.</p>
           </div>
           <button onClick={handleHideRules} className={styles.button}>
             Voltar
