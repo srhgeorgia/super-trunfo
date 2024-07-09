@@ -183,3 +183,69 @@ img {
   margin-bottom: 10px;
   margin-top: 10px;
 }
+
+@media (min-width: 340px) and (max-width: 1341px) {
+  .containerButtons {
+    margin-top: 2rem;
+  }
+
+  .players {
+    margin-right: auto;
+    margin-left: 3rem;
+    flex-direction: column;
+  }
+
+  .player {
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    padding: 1rem;
+    width: 90%;
+    background-color: #f4f1ec;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 1rem;
+  }
+
+  .cards {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 0;
+    padding: 0;
+  }
+
+  .card {
+    background-color: #ebdeca;
+    cursor: pointer;
+    border: 1px solid transparent;
+    border-radius: 5px;
+    transition: 0.1s;
+    flex: 0 0 150px;
+    margin-right: 0px;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    padding: 10px;
+    min-width: 12rem;
+  }
+
+  .cardBox {
+    padding: 10px !important;
+  }
+
+  .card:hover,
+  .selected {
+    border: 2px solid #f94668;
+  }
+
+  .gameHistory {
+    margin: 1rem 2rem;
+  }
+
+  img {
+    margin-bottom: 5px;
+    margin-top: 5px;
+    max-width: 100%;
+  }
+}
