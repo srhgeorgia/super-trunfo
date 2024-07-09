@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './Initial.module.css';
+import styles from '../styles/Initial.module.css';
 
 interface InitialProps {
   onStartGame: () => void;
@@ -37,19 +37,18 @@ export const Initial: React.FC<InitialProps> = ({ onStartGame }) => {
         </div>
       ) : (
         <div className={styles.rules}>
-          <h2>Regras do Super Trunfo</h2>
-          <p>1. Cada jogador recebe um número igual de cartas.</p>
-          <p>
-            2. Em cada rodada, um jogador escolhe um atributo para comparar.
-          </p>
-          <p>
-            3. O jogador com o valor mais alto nesse atributo ganha a rodada e
-            fica com as cartas comparadas.
-          </p>
-          <p>
-            4. O jogo continua até que um jogador tenha todas as cartas ou que
-            um tempo limite seja alcançado.
-          </p>
+          <h2 className={styles.title}>Regras do Super Trunfo</h2>
+          <div className={styles.descriptionRules}>
+            <p>1. Cada jogador recebe um número igual de cartas.</p>
+            <p>
+              2. Em cada rodada, um jogador escolhe um atributo para comparar.
+            </p>
+            <p>
+              3. O jogador com o valor mais alto nesse atributo ganha a rodada e
+              fica com as cartas comparadas.
+            </p>
+            <p>4. O jogo continua até que um jogador tenha todas as cartas.</p>
+          </div>
           <button onClick={handleHideRules} className={styles.button}>
             Voltar
           </button>
