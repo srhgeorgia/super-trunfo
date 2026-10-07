@@ -18,3 +18,5 @@ Este é um projeto de um jogo de Super Trunfo desenvolvido em React e TypeScript
 - HTML
 - Vite
 - Vercel
+
+https://super-trunfo-rho.vercel.app/index.html
